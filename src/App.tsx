@@ -2,16 +2,21 @@ import { useState } from 'react';
 import NavBar from './components/Logo/NavBar';
 import Search from './components/Logo/Search.tsx';
 import SearchResults from './components/Logo/SearchResults.tsx';
-import { type UnwatchedMoviesProps } from './utils/temp-movies';
+import {
+  WatchedMoviesProps,
+  type UnwatchedMoviesProps,
+} from './utils/temp-movies';
 
-import { tempMovieData } from './utils/temp-movies';
+import { tempMovieData, tempWatchedData } from './utils/temp-movies';
 import Main from './components/Main.tsx';
-import UnwatchedMovieBox from './components/UnwatchedMovie/UnwatchedMoviesBox.tsx';
-import WatchedMovieBox from './components/WatchedMovie/WatchedMovieBox.tsx';
+import MoviesBox from './components/MoviesBox.tsx';
+import WatchedSummary from './components/WatchedMovie/WatchedSummary.tsx';
+import WatchedMoviesList from './components/WatchedMovie/WatchedMoviesList.tsx';
 import MovieList from './components/UnwatchedMovie/MovieList.tsx';
 
 export default function App() {
   const [movies, setMovies] = useState<UnwatchedMoviesProps[]>(tempMovieData);
+  const [watched, setWatched] = useState<WatchedMoviesProps[]>(tempWatchedData);
   return (
     <>
       <NavBar>
@@ -19,10 +24,13 @@ export default function App() {
         <SearchResults movies={movies} />
       </NavBar>
       <Main>
-        <UnwatchedMovieBox>
+        <MoviesBox>
           <MovieList movies={movies} />
-        </UnwatchedMovieBox>
-        <WatchedMovieBox />
+        </MoviesBox>
+        <MoviesBox>
+          <WatchedSummary watched={watched} />
+          <WatchedMoviesList watched={watched} />
+        </MoviesBox>
       </Main>
     </>
   );

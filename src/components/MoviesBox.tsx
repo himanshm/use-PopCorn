@@ -1,5 +1,5 @@
 import { type ReactNode, useState } from 'react';
-import Button from '../UI/Button';
+import Button from './UI/Button';
 
 type UnwatchedMovieBoxProps = {
   children: ReactNode;
