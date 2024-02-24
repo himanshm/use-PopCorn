@@ -84,6 +84,16 @@ function MovieDetails({
 
     fetchMovieDetails();
   }, [movieId]);
+
+  useEffect(() => {
+    document.title = `Movie | ${movie.Title}`;
+
+    return () => {
+      document.title = 'usePopcorn';
+      console.log(`Clean up effect for movie ${movie.Title}`);
+    };
+  }, [movie]);
+
   return (
     <div className='details'>
       {isLoading && <Loader />}

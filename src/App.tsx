@@ -45,7 +45,7 @@ export default function App() {
     setWatched((prevWatchedMovie) => [...prevWatchedMovie, movie]);
   }
 
-  function handleDeleteWatchedMovie(id) {
+  function handleDeleteWatchedMovie(id: string) {
     setWatched((prevWatchedMovie) =>
       prevWatchedMovie.filter((movie) => movie.imdbID !== id)
     );
