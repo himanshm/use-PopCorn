@@ -3,13 +3,14 @@ import { type UnwatchedMoviesProps } from '../../utils/temp-movies';
 
 type MovieListProps = {
   movies: UnwatchedMoviesProps[];
+  selectMovie: (id: string) => void;
 };
 
-function MovieList({ movies }: MovieListProps) {
+function MovieList({ movies, selectMovie }: MovieListProps) {
   return (
-    <ul className='list'>
+    <ul className='list list-movies'>
       {movies.map((movie) => (
-        <Movie movie={movie} key={movie.imdbID} />
+        <Movie movie={movie} key={movie.imdbID} onSelectMovie={selectMovie} />
       ))}
     </ul>
   );

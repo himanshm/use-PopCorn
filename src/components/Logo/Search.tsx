@@ -1,17 +1,20 @@
-import { useRef } from 'react';
+import { type ChangeEvent } from 'react';
 
-function Search() {
-  const query = useRef<HTMLInputElement>(null);
-
-  // if(query.current !== null )
-
-  const enteredMovie = query.current?.value;
+type SearchProps = {
+  query: string;
+  handleSetQuery: (value: string) => void;
+};
+function Search({ query, handleSetQuery }: SearchProps) {
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    handleSetQuery(event.target.value);
+  }
   return (
     <input
       className='search'
       type='text'
       placeholder='Search movies...'
-      ref={query}
+      value={query}
+      onChange={handleChange}
     />
   );
 }
