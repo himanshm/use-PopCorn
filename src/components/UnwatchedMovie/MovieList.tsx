@@ -1,16 +1,25 @@
-import Movie from './Movie';
 import { type UnwatchedMoviesProps } from '../../utils/temp-movies';
 
 type MovieListProps = {
   movies: UnwatchedMoviesProps[];
-  selectMovie: (id: string) => void;
+  onSelectMovie: (id: string) => void;
 };
 
-function MovieList({ movies, selectMovie }: MovieListProps) {
+function MovieList({ movies, onSelectMovie }: MovieListProps) {
   return (
     <ul className='list list-movies'>
       {movies.map((movie) => (
-        <Movie movie={movie} key={movie.imdbID} onSelectMovie={selectMovie} />
+        // <Movie movie={movie} key={movie.imdbID} onSelectMovie={selectMovie} />
+        <li key={movie.imdbID} onClick={() => onSelectMovie(movie.imdbID)}>
+          <img src={movie.Poster} alt={`${movie.Title} poster`} />
+          <h3>{movie.Title}</h3>
+          <div>
+            <p>
+              <span>🗓</span>
+              <span>{movie.Year}</span>
+            </p>
+          </div>
+        </li>
       ))}
     </ul>
   );

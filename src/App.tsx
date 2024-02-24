@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import {
-  WatchedMoviesProps,
+  type WatchedMoviesProps,
   type UnwatchedMoviesProps,
 } from './utils/temp-movies';
 
@@ -39,6 +39,16 @@ export default function App() {
 
   function handleCloseMovie() {
     setSelectedId('');
+  }
+
+  function handleAddWatchedMovie(movie: WatchedMoviesProps) {
+    setWatched((prevWatchedMovie) => [...prevWatchedMovie, movie]);
+  }
+
+  function handleDeleteWatchedMovie(id) {
+    setWatched((prevWatchedMovie) =>
+      prevWatchedMovie.filter((movie) => movie.imdbID !== id)
+    );
   }
 
   useEffect(() => {
@@ -82,20 +92,10 @@ export default function App() {
         <SearchResults movies={movies} />
       </NavBar>
       <Main>
-        {/* <MoviesBox element={<MovieList movies={movies} />} />
-        <MoviesBox
-          element={
-            <>
-              <WatchedSummary watched={watched} />
-              <WatchedMoviesList watched={watched} />
-            </>
-          }
-        /> */}
         <MoviesBox>
-          {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
           {isLoading && <Loader />}
           {!isLoading && !error && (
-            <MovieList movies={movies} selectMovie={handleSelectedMovie} />
+            <MovieList movies={movies} onSelectMovie={handleSelectedMovie} />
           )}
           {error && <ErrorMessage message={error} />}
         </MoviesBox>
@@ -104,11 +104,16 @@ export default function App() {
             <MovieDetails
               movieId={selectedId}
               onCloseMovie={handleCloseMovie}
+              onAddWatchedMovie={handleAddWatchedMovie}
+              watched={watched}
             />
           ) : (
             <>
               <WatchedSummary watched={watched} />
-              <WatchedMoviesList watched={watched} />
+              <WatchedMoviesList
+                watched={watched}
+                onDeleteMovie={handleDeleteWatchedMovie}
+              />
             </>
           )}
         </MoviesBox>
