@@ -6,7 +6,6 @@ function Search() {
   // if(query.current !== null )
 
   const enteredMovie = query.current?.value;
-  console.log(enteredMovie);
   return (
     <input
       className='search'
