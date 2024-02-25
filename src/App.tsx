@@ -1,9 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import {
-  type WatchedMoviesProps,
-  type UnwatchedMoviesProps,
-} from './utils/movie-types.ts';
+import { type WatchedMoviesProps } from './utils/movie-types.ts';
 
 import NavBar from './components/Logo/NavBar';
 import Search from './components/Logo/Search.tsx';
@@ -16,30 +13,22 @@ import WatchedSummary from './components/WatchedMovie/WatchedSummary.tsx';
 import WatchedMoviesList from './components/WatchedMovie/WatchedMoviesList.tsx';
 import ErrorMessage from './components/ErrorMessage.tsx';
 import MovieDetails from './components/MovieDetails.tsx';
+import { useMovies } from './hooks/useMovies.ts';
+import { useLocalStorageState } from './hooks/useLocalStorageState.ts';
 
-const KEY = import.meta.env.VITE_API_KEY;
+const KEY: string = import.meta.env.VITE_API_KEY;
 
 export default function App() {
   const [query, setQuery] = useState<string>('');
-  const [movies, setMovies] = useState<UnwatchedMoviesProps[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
   const [selectedId, setSelectedId] = useState<string>('');
 
-  // const storedValue: string | null = localStorage.getItem('watchedMovies');
-  // const initialValue: WatchedMoviesProps[] = storedValue
-  //   ? JSON.parse(storedValue)
-  //   : [];
+  const { movies, isLoading, error } = useMovies(
+    'http://www.omdbapi.com/',
+    query,
+    KEY
+  );
 
-  // const [watched, setWatched] = useState<WatchedMoviesProps[]>(initialValue);
-
-  const [watched, setWatched] = useState<WatchedMoviesProps[]>(() => {
-    const storedValue: string | null = localStorage.getItem('watchedMovies');
-    return storedValue ? JSON.parse(storedValue) : [];
-  });
-
-  // const [error, setError] = useState<Error>(new Error('No error'));
-  // const [error, setError] = useState<Error | null>(null);
+  const [watched, setWatched] = useLocalStorageState([], 'watchedMovies');
 
   function handleQuery(newQuery: string) {
     setQuery(newQuery);
@@ -55,9 +44,6 @@ export default function App() {
 
   function handleAddWatchedMovie(movie: WatchedMoviesProps) {
     setWatched((prevWatchedMovie) => [...prevWatchedMovie, movie]);
-
-    // Add a selected movie to the localStorage
-    // localStorage.setItem('watchedMovies', JSON.stringify([...watched, movie]));
   }
 
   function handleDeleteWatchedMovie(id: string) {
@@ -67,53 +53,10 @@ export default function App() {
   }
 
   // This will only run after the watched is updated to the newest state
-  useEffect(() => {
-    localStorage.setItem('watchedMovies', JSON.stringify(watched));
-  }, [watched]);
+  // useEffect(() => {
+  //   localStorage.setItem('watchedMovies', JSON.stringify(watched));
+  // }, [watched]);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    async function fetchMovies() {
-      try {
-        setIsLoading(true);
-        setError('');
-
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
-          { signal: controller.signal }
-        );
-
-        if (!res.ok)
-          throw new Error('Something went wrong with fetching movies!');
-        const data = await res.json();
-
-        if (data.Response === 'False') throw new Error('Movie not found!');
-        setMovies(data.Search);
-        setError('');
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          if (error.name !== 'AbortError') {
-            console.error(error.message);
-            setError(error.message);
-          }
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    if (!query.length) {
-      setMovies([]);
-      setError('');
-      return;
-    }
-    handleCloseMovie();
-    fetchMovies();
-
-    return () => {
-      controller.abort();
-    };
-  }, [query]);
   return (
     <>
       <NavBar>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import StarRating from './UI/StarRating';
 import Loader from './Loader';
 import { type WatchedMoviesProps } from '../utils/movie-types';
+import { useKey } from '../hooks/useKey';
 
 const KEY = import.meta.env.VITE_API_KEY;
 
@@ -70,19 +71,7 @@ function MovieDetails({
     onCloseMovie();
   }
 
-  // useEffect is also called a escape hatch
-  useEffect(() => {
-    const callback = (event: KeyboardEvent) => {
-      if (event.code === 'Escape') {
-        onCloseMovie();
-      }
-    };
-    document.addEventListener<'keydown'>('keydown', callback);
-
-    return () => {
-      document.removeEventListener('keydown', callback);
-    };
-  }, [onCloseMovie]);
+  useKey('Escape', onCloseMovie);
 
   useEffect(() => {
     async function fetchMovieDetails() {
