@@ -70,6 +70,20 @@ function MovieDetails({
     onCloseMovie();
   }
 
+  // useEffect is also called a escape hatch
+  useEffect(() => {
+    const callback = (event: KeyboardEvent) => {
+      if (event.code === 'Escape') {
+        onCloseMovie();
+      }
+    };
+    document.addEventListener<'keydown'>('keydown', callback);
+
+    return () => {
+      document.removeEventListener('keydown', callback);
+    };
+  }, [onCloseMovie]);
+
   useEffect(() => {
     async function fetchMovieDetails() {
       setIsLoading(true);
@@ -90,7 +104,6 @@ function MovieDetails({
 
     return () => {
       document.title = 'usePopcorn';
-      console.log(`Clean up effect for movie ${movie.Title}`);
     };
   }, [movie]);
 
