@@ -1,4 +1,4 @@
-import { UnwatchedMoviesProps } from '../../utils/temp-movies';
+import { UnwatchedMoviesProps } from '../../utils/movie-types';
 
 type SearchResultsProps = {
   movies: UnwatchedMoviesProps[];

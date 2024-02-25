@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import StarRating from './UI/StarRating';
 import Loader from './Loader';
-import { type WatchedMoviesProps } from '../utils/temp-movies';
+import { type WatchedMoviesProps } from '../utils/movie-types';
 
 const KEY = import.meta.env.VITE_API_KEY;
 

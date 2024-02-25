@@ -5,9 +5,9 @@ import SearchResults from './components/Logo/SearchResults.tsx';
 import {
   WatchedMoviesProps,
   type UnwatchedMoviesProps,
-} from './utils/temp-movies';
+} from './utils/movie-types.ts';
 
-import { tempMovieData, tempWatchedData } from './utils/temp-movies';
+import { tempMovieData, tempWatchedData } from './utils/movie-types.ts';
 import Main from './components/Main.tsx';
 import MoviesBox from './components/MoviesBox.tsx';
 import WatchedSummary from './components/WatchedMovie/WatchedSummary.tsx';

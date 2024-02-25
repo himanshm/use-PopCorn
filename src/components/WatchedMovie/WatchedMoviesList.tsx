@@ -1,5 +1,5 @@
 // import WatchedMovie from './WatchedMovie';
-import { type WatchedMoviesProps } from '../../utils/temp-movies';
+import { type WatchedMoviesProps } from '../../utils/movie-types';
 
 export type WatchedMoviesListProps = {
   watched: WatchedMoviesProps[];

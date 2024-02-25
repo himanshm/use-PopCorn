@@ -22,22 +22,10 @@ const KEY = import.meta.env.VITE_API_KEY;
 export default function App() {
   const [query, setQuery] = useState<string>('');
   const [movies, setMovies] = useState<UnwatchedMoviesProps[]>([]);
+  const [watched, setWatched] = useState<WatchedMoviesProps[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [selectedId, setSelectedId] = useState<string>('');
-
-  // const storedValue: string | null = localStorage.getItem('watchedMovies');
-  // const initialValue: WatchedMoviesProps[] = storedValue
-  //   ? JSON.parse(storedValue)
-  //   : [];
-
-  // const [watched, setWatched] = useState<WatchedMoviesProps[]>(initialValue);
-
-  const [watched, setWatched] = useState<WatchedMoviesProps[]>(() => {
-    const storedValue: string | null = localStorage.getItem('watchedMovies');
-    return storedValue ? JSON.parse(storedValue) : [];
-  });
-
   // const [error, setError] = useState<Error>(new Error('No error'));
   // const [error, setError] = useState<Error | null>(null);
 
@@ -55,9 +43,6 @@ export default function App() {
 
   function handleAddWatchedMovie(movie: WatchedMoviesProps) {
     setWatched((prevWatchedMovie) => [...prevWatchedMovie, movie]);
-
-    // Add a selected movie to the localStorage
-    // localStorage.setItem('watchedMovies', JSON.stringify([...watched, movie]));
   }
 
   function handleDeleteWatchedMovie(id: string) {
@@ -65,11 +50,6 @@ export default function App() {
       prevWatchedMovie.filter((movie) => movie.imdbID !== id)
     );
   }
-
-  // This will only run after the watched is updated to the newest state
-  useEffect(() => {
-    localStorage.setItem('watchedMovies', JSON.stringify(watched));
-  }, [watched]);
 
   useEffect(() => {
     const controller = new AbortController();

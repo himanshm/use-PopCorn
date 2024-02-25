@@ -1,4 +1,4 @@
-import { type WatchedMoviesProps } from '../../utils/temp-movies';
+import { type WatchedMoviesProps } from '../../utils/movie-types';
 
 const average = (arr: Array<number>) =>
   arr.reduce((acc, cur, _, arr) => acc + cur / arr.length, 0);
